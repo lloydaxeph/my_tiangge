@@ -1,4 +1,4 @@
-# MyTiangge — Developer README
+# MyTiangge — Developer's README
 
 MyTiangge is a mobile-first POS + inventory + utang (credit) tracker for sari-sari
 store owners. This doc is for developers who need to read, debug, or extend the
@@ -68,7 +68,7 @@ Five files, applied in order:
   policy at all — see below.
 - `0004_create_sale_rpc.sql` — `create_sale()`, a single Postgres function that
   validates stock, inserts the sale + line items, and decrements stock
-  atomically. This is the *only* way sale data is ever written; if a sale looks
+  atomically. This is the _only_ way sale data is ever written; if a sale looks
   wrong, debug this function, not `sales.service.ts`.
 - `0005_storage_policies.sql` — locks Storage writes to `{user_id}/...` folders
   in the `product-images` and `gcash-qr` buckets (both public-read).
@@ -117,7 +117,7 @@ Notable ones:
 - `sales.service.ts` — `createSale()` calls the `create_sale` RPC (see
   `0004_create_sale_rpc.sql`); it does not insert into `sales`/`sale_items`
   directly, because RLS blocks that (see above).
-- `utang.service.ts` — a customer's balance is *derived*, not stored:
+- `utang.service.ts` — a customer's balance is _derived_, not stored:
   `sum(utang.amount) - sum(utang_payments.amount)`. There's no "balance"
   column anywhere; if a balance looks wrong, check the charges/payments rows,
   not a cached total.
@@ -171,7 +171,7 @@ follow the hook/service/RLS chain down.
   should always resolve regardless of the caller's own row access).
 - **"Stock didn't decrement / sale is missing items"** → the whole write path
   is `create_sale()`; check its `raise exception` conditions — a partial
-  failure there rolls back the entire sale, so you'd see *no* sale row at all,
+  failure there rolls back the entire sale, so you'd see _no_ sale row at all,
   not a half-written one.
 - **"Camera won't open for barcode scanning"** → needs HTTPS (or localhost) and
   camera permission; check `useBarcodeScanner.ts`'s `error` state, and confirm
